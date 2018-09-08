@@ -87,11 +87,12 @@ Vue.component('app-video', {
 
 });
 
+// javascript:gotoTS(row.tsSec)
 Vue.component('app-caption', {
   template: `
                 <div class="scroller">
                 <ul>
-                        <li  v-for="row in captions"><a href="#">{{ row.tsDisplay }}</a>{{ row.text }}, </li> 
+                    <li  v-for="row in captions" v-on:click="seek($event, row.tsSec)"><a href="#" >{{ row.tsDisplay }}</a>{{ row.text }}, </li> 
                 </ul>
                 </div>
   `,
@@ -102,6 +103,14 @@ Vue.component('app-caption', {
   },
   mounted: function() {
     console.log("vue app-caption initialized");
+  },
+  methods: {
+    seek: function(event, arg){
+        console.log('seek called');
+        // console.log(event);
+        console.log(arg);
+        window.gotoTS(arg);
+    }
   }
 });
 
@@ -242,6 +251,11 @@ function tsToSeconds(ts){
     // h:3600, m:60 , s: 
     var inSeconds = (parseInt(startTime[0]*3600)) +(parseInt(startTime[1]*60)) + parseInt(startTime[2]);
     return inSeconds;
+}
+
+function gotoTS(ts){
+    // console.log(ts);
+    console.log('seekTo: ' + ts);
 }
 
 function autoResizeSRTLayout(){
