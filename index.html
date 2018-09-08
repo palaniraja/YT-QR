@@ -14,7 +14,12 @@ body,
     width: 100%;
     height: 100%;
     margin: 0;
+/*      position: absolute;
+      width: 100vh;
+      height: 100vh;*/
 }
+
+
 
 .vbox {
     display: flex;
@@ -53,38 +58,15 @@ body,
     align-content: stretch;
 }
 
-.video{
-    background-color: #AAA;
-    display: flex;
-    align-content: center;
-    justify-content: center;
 
-}
-.video,
-.text {
-    flex: 1;
-}
-
-#ytVideo{
-    background-color: yellow;
-    width: 95%;
-    
-}
-
-
-.scroller{
-    flex: 1;
-    overflow-y: auto;
-}
-
-ul {
+.text ul {
     list-style:none;
 }
-ul li a{
+.text ul li a{
     margin-right: 0.7rem;
 }
 
-ul li a:hover{
+.text ul li a:hover{
     color:white;
     background-color: red;
 }
@@ -101,32 +83,59 @@ ul li a:hover{
 .text li{
     cursor: pointer;
 }
+
+
+
+.video{
+    background-color: #AAA;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+}
+.video,
+.text {
+    flex: 1;
+}
+
+
+.text{
+    background-color: lightblue;
+    overflow: hidden;    
+}
+
+#ytVideo{
+    background-color: yellow;
+    width: 95%;    
+}
+
+
+.scroller{
+    height: 300px;
+    overflow:scroll;
+}
+
+
+.yahoo{
+    overflow:hidden;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.title{
+   /*color:transparent;*/
+}
+
+
 </style>
 <style>
 </style>
 
 <body class="vbox viewport">
     <!-- <div id="app" /> -->
-    <div class="app-container">
-        <header class="search"><div id="search"> <div class="row">    <div class="column column-75"><input type="text" id="url" placeholder="Youtube URL or Video ID" autocomplete="off" value="https://www.youtube.com/watch?v=7QPlF2UNowM" /></div>    <div class="column column-25"><input type="button" value="Watch" class="button-outline" /></div>  </div></div></header>
-        <main class="app-main">
-            <section class="video">
-                <div id="ytVideo">
-                    <!-- embed code goes here height="auto"  -->
-                    <!-- <iframe height="100%" width="100%" src="https://www.youtube.com/embed/7QPlF2UNowM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
-                </div>
-            </section>
-            <section class="text">
-                <h4>Title: Goes here </h4>
-                <ul>
-                    <li><a href="#">00:00</a>Lorem ipsum dolor sit amet, </li> 
-                    <li><a href="#">00:10</a>consectetur adipisicing elit. Debitis modi, </li>
-                    <li><a href="#">00:11</a>maxime quo nihil veritatis, molestias mollitia voluptatum ut delectus</li>
-                    <li><a href="#">00:27</a>similique doloribus nisi inventore, officia voluptate beatae? Optio ratione a officia!</li>
-                </ul>
-               
-            </section>
-        </main>
+    <div id="app">
+        
     </div>
     <script src="js/app.js"></script>
 </body>
