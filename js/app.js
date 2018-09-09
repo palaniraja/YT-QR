@@ -1,33 +1,6 @@
 var store = {
     'captions': [
-        {
-            'index': 1,
-            'ts': '00:00:00,010 --> 00:00:01,800',
-            'text': 'hello my name is Paul Hudson and this',
-            'tsDisplay': '00:00:00',
-            'tsSec': 1
-        },
-        {
-            'index': 2,
-            'ts': '00:00:01,800 --> 00:00:05,490',
-            'text': 'video is called iOS 12 in 45 minutes now',
-            'tsDisplay': '00:00:01',
-            'tsSec': 2
-        },
-        {
-            'index': 3,
-            'ts': '00:00:05,490 --> 00:00:06,899',
-            'text': 'I know some of you are watching this',
-            'tsDisplay': '00:00:05',
-            'tsSec': 3
-        },
-        {
-            'index': 4,
-            'ts': '00:00:06,899 --> 00:00:08,970',
-            'text': 'thinking this guy is almost certainly',
-            'tsDisplay': '00:00:06',
-            'tsSec': 4
-        }
+        
     ]
 };
 
@@ -47,7 +20,7 @@ Vue.component('app-search', {
   `,
   data: function (){
     return {
-        url: 'https://www.youtube.com/embed/7QPlF2UNowM?enablejsapi=1'
+        url: 'https://www.youtube.com/embed/7QPlF2UNowM'
     };
   },
   mounted: function() {
@@ -63,6 +36,7 @@ Vue.component('app-search', {
             console.log("youtubeId parsed: " + ytId);
             store.youtubeId = ytId;
             loadYTvideo(ytId);    
+            fetchSRT(store.youtubeId);
         }
         
     }
@@ -127,7 +101,7 @@ Vue.component('app', {
             </section>
             <section class="text">
                 <div class="title">
-                    <h4>&nbsp;</h4>
+                    Use browser's search to quickly seek to topic you are interested in.
                 </div>
                 <app-caption />
             </section>
@@ -177,9 +151,11 @@ var app = new Vue({
 
 function loadYTvideo(url){
     var yt = document.getElementById('ytVideo');
-    yt.innerText = `
-<iframe height="100%" width="100%" src="https://www.youtube.com/embed/`+url+`?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> 
-    `;
+//     yt.innerText = `
+// <iframe height="100%" width="100%" src="https://www.youtube.com/embed/`+url+`?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> 
+//     `;
+    console.log('loadYTvideo :'+url);
+    onYouTubeIframeAPIReady(url);
 }
 
 function parseForYoutubeId(urlIdString){
@@ -200,6 +176,7 @@ function parseForYoutubeId(urlIdString){
 
 
 function fetchSRT(youtubeId){
+    console.log('fetchSRT called with id: ' + youtubeId);
     // https://www.diycaptions.com/php/get-automatic-captions-as-srt.php?id=ATlila3e9dM
     // var srtUrl = 'https://www.diycaptions.com/php/get-automatic-captions-as-srt.php?id='+youtubeId;
     var srtUrl = 'https://ytqr.glitch.me/'+youtubeId;
@@ -231,6 +208,7 @@ function parseSrt(response){
     var srt = store.response.split('\n\n');
     console.log('srt length: ' + srt.length);
     // store.captions = [];
+    store.captions.splice(0, store.captions.length); 
     srt.forEach(function(line){
         var tsLine = line.split('\n');
         // console.log('ts length: '+ tsLine.length);
@@ -256,6 +234,8 @@ function tsToSeconds(ts){
 function gotoTS(ts){
     // console.log(ts);
     console.log('seekTo: ' + ts);
+    player.seekTo(ts, true);
+
 }
 
 function autoResizeSRTLayout(){
@@ -272,5 +252,45 @@ function autoResizeSRTLayout(){
 function domInitVue(){
     autoResizeSRTLayout();
 }
+
+
+// youtube - jsapi - https://developers.google.com/youtube/iframe_api_reference
+
+var player;
+function onYouTubeIframeAPIReady(url) {
+    if(!url){
+        return;
+    }
+    console.log('onYouTubeIframeAPIReady called '+url);
+    player = new YT.Player('ytVideo', {
+      height: '100%',
+      width: '100%',
+      videoId: url,
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+}
+
+function onPlayerReady(event) {
+    console.log('onPlayerReady called');
+    // event.target.playVideo();
+}
+
+var done = false;
+
+function onPlayerStateChange(event) {
+    console.log('onPlayerStateChange called');
+    if (event.data == YT.PlayerState.PLAYING && !done) {
+      // setTimeout(stopVideo, 2000);
+      done = true;
+    }
+}
+function stopVideo() {
+    console.log('stopVideo called');
+    player.stopVideo();
+}
+
 
 // https://www.youtube.com/watch?v=7QPlF2UNowM

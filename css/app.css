@@ -8,3 +8,124 @@
 #main{
     
 }
+
+html,
+body,
+.viewport {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+/*      position: absolute;
+      width: 100vh;
+      height: 100vh;*/
+}
+
+
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+}
+
+.hbox {
+    display: flex;
+    flex-direction: row;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    flex: 1 1 auto;
+}
+
+.app-container div,
+.app-container header,
+.app-container section,
+.app-container .appMain
+ {
+    /*border: 1px solid red;*/
+}
+
+.search {
+    flex: 0 1 auto;
+    align-content: stretch;
+}
+
+.app-main {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    align-content: stretch;
+}
+
+
+.text ul {
+    list-style:none;
+}
+.text ul li a{
+    margin-right: 0.7rem;
+}
+
+.text ul li a:hover{
+    color:white;
+    background-color: red;
+}
+
+.text li:nth-child(odd) {
+    background-color: #DDD;
+}
+.text li:nth-child(even) {
+    background-color: white;
+}
+
+
+
+.text li{
+    cursor: pointer;
+}
+
+
+
+.video{
+    background-color: #AAA;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+}
+.video,
+.text {
+    flex: 1;
+}
+
+
+.text{
+    background-color: lightblue;
+    overflow: hidden;    
+}
+
+#ytVideo{
+    background-color: yellow;
+    width: 95%;    
+}
+
+
+.scroller{
+    height: 300px;
+    overflow:scroll;
+}
+
+
+.yahoo{
+    overflow:hidden;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.title{
+/*   color:transparent;
+   height: 1px;*/
+   padding: 0.5em 1em;
+}
