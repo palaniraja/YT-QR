@@ -65,15 +65,17 @@ body,
 }
 .text ul li a{
     margin-right: 0.7rem;
+    font-family: monospace;
 }
 
 .text ul li a:hover{
     color:white;
     background-color: red;
+
 }
 
 .text li:nth-child(odd) {
-    background-color: #DDD;
+    background-color: #F3F3F3;
 }
 .text li:nth-child(even) {
     background-color: white;
@@ -88,7 +90,7 @@ body,
 
 
 .video{
-    background-color: #AAA;
+    background-color: #292929;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -101,12 +103,12 @@ body,
 
 
 .text{
-    background-color: lightblue;
+    /*background-color: lightblue;*/
     overflow: hidden;    
 }
 
 #ytVideo{
-    background-color: yellow;
+    /*background-color: yellow;*/
     width: 95%;    
 }
 
@@ -116,6 +118,9 @@ body,
     overflow:scroll;
 }
 
+.scroller ul{
+	margin: 0 0.4em;
+}
 
 .yahoo{
     overflow:hidden;
