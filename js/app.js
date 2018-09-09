@@ -4,12 +4,14 @@ var store = {
     ]
 };
 
+var player;
+
 Vue.component('app-search', {
   template: `
         <div id="search">
             <div class="row">
                 <div class="column column-75">
-                    <input type="text" id="url" placeholder="Youtube URL or Video ID" autocomplete="off" v-model=url />
+                    <input type="text" id="url" placeholder="Youtube URL" autocomplete="off" v-model=url />
                 </div>
                 <div class="column column-25">
                     <input type="button" value="Watch" class="button-outline" v-on:click="loadYoutube"/>
@@ -255,22 +257,30 @@ function domInitVue(){
 
 
 // youtube - jsapi - https://developers.google.com/youtube/iframe_api_reference
-
 var player;
+
 function onYouTubeIframeAPIReady(url) {
     if(!url){
         return;
     }
     console.log('onYouTubeIframeAPIReady called '+url);
-    player = new YT.Player('ytVideo', {
-      height: '100%',
-      width: '100%',
-      videoId: url,
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    });
+    // var ytdiv = document.getElementById('ytVideo');
+    // ytdiv.innerHTML = '&nbsp;';
+    if(player){
+        player.loadVideoById(url);
+    }
+    else {
+        player = new YT.Player('ytVideo', {
+          height: '100%',
+          width: '100%',
+          videoId: url,
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });        
+    }
+    
 }
 
 function onPlayerReady(event) {
