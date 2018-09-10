@@ -1,7 +1,5 @@
 var store = {
-    'captions': [
-        
-    ]
+    'captions': []
 };
 
 var player;
@@ -10,10 +8,10 @@ Vue.component('app-search', {
   template: `
         <div id="search">
             <div class="row">
-                <div class="column column-75">
+                <div class="column column-80">
                     <input type="text" id="url" placeholder="Youtube URL" autocomplete="off" v-model=url />
                 </div>
-                <div class="column column-25">
+                <div class="column column-20">
                     <input type="button" value="Watch" class="button-outline" v-on:click="loadYoutube"/>
                 </div>
             </div>
@@ -68,7 +66,7 @@ Vue.component('app-caption', {
   template: `
                 <div class="scroller">
                 <ul>
-                    <li  v-for="row in captions" v-on:click="seek($event, row.tsSec)"><a href="#" >{{ row.tsDisplay }}</a>{{ row.text }}, </li> 
+                    <li  v-for="row in captions" v-on:click="seek($event, row.tsSec)"><a href="#" >{{ row.tsDisplay }}</a>{{ row.text }} </li> 
                 </ul>
                 </div>
   `,
@@ -179,6 +177,17 @@ function parseForYoutubeId(urlIdString){
 
 function fetchSRT(youtubeId){
     console.log('fetchSRT called with id: ' + youtubeId);
+
+    store.captions.splice(0, store.captions.length); //clear previous captions if any
+    store.captions.push(
+        {
+            'index': 0,
+            'ts': "",
+            'text': "loading auto generated transcript ...",
+            'tsDisplay': "",
+            'tsSec': 0
+        }
+    );
     // https://www.diycaptions.com/php/get-automatic-captions-as-srt.php?id=ATlila3e9dM
     // var srtUrl = 'https://www.diycaptions.com/php/get-automatic-captions-as-srt.php?id='+youtubeId;
     var srtUrl = 'https://ytqr.glitch.me/'+youtubeId;
@@ -210,7 +219,7 @@ function parseSrt(response){
     var srt = store.response.split('\n\n');
     console.log('srt length: ' + srt.length);
     // store.captions = [];
-    store.captions.splice(0, store.captions.length); 
+    store.captions.splice(0, store.captions.length); //clear previous captions if any
     srt.forEach(function(line){
         var tsLine = line.split('\n');
         // console.log('ts length: '+ tsLine.length);

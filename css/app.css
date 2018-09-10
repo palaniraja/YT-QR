@@ -54,7 +54,7 @@ body,
 
 .app-main {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 1 1 auto;
     align-content: stretch;
 }
@@ -133,4 +133,14 @@ body,
 /*   color:transparent;
    height: 1px;*/
    padding: 0.5em 1em;
+}
+
+/* larger than mobile */
+@media (min-width: 40.0rem) { 
+
+	.app-main {
+	    flex-direction: row;
+	}
+
+
 }
