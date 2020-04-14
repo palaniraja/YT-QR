@@ -24,16 +24,16 @@ Vue.component('app-search', {
     };
   },
   mounted: function() {
-    console.log("vue search initialized");
+    c.log("vue search initialized");
   },
   methods: {
     loadYoutube: function(event){
         store.inputString = url.value;
-        console.log('request to load url: ' );
-        console.log(url.value);
+        c.log('request to load url: ' );
+        c.log(url.value);
         var ytId = parseForYoutubeId(url.value)
         if (ytId){
-            console.log("youtubeId parsed: " + ytId);
+            c.log("youtubeId parsed: " + ytId);
             store.youtubeId = ytId;
             loadYTvideo(ytId);    
             fetchSRT(store.youtubeId);
@@ -51,7 +51,7 @@ Vue.component('app-video', {
                 </div>
   `,
   mounted: function() {
-    console.log("vue app-video initialized");
+    c.log("vue app-video initialized");
   },
   methods: {
     loadYoutube: function(event){
@@ -76,13 +76,13 @@ Vue.component('app-caption', {
     }
   },
   mounted: function() {
-    console.log("vue app-caption initialized");
+    c.log("vue app-caption initialized");
   },
   methods: {
     seek: function(event, arg){
-        console.log('seek called');
-        // console.log(event);
-        console.log(arg);
+        c.log('seek called');
+        // c.log(event);
+        c.log(arg);
         window.gotoTS(arg);
     }
   }
@@ -109,7 +109,7 @@ Vue.component('app', {
     </div>
   `,
   mounted: function() {
-    console.log("vue app-component initialized");
+    c.log("vue app-component initialized");
 
   }
 });
@@ -122,7 +122,7 @@ var app = new Vue({
     response: '',
   },
   mounted: function() {
-    console.log("vue app initialized");
+    c.log("vue app initialized");
     autoResizeSRTLayout();
   },
   methods: {
@@ -154,7 +154,7 @@ function loadYTvideo(url){
 //     yt.innerText = `
 // <iframe height="100%" width="100%" src="https://www.youtube.com/embed/`+url+`?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> 
 //     `;
-    console.log('loadYTvideo :'+url);
+    c.log('loadYTvideo :'+url);
     onYouTubeIframeAPIReady(url);
 }
 
@@ -176,7 +176,7 @@ function parseForYoutubeId(urlIdString){
 
 
 function fetchSRT(youtubeId){
-    console.log('fetchSRT called with id: ' + youtubeId);
+    c.log('fetchSRT called with id: ' + youtubeId);
 
     store.captions.splice(0, store.captions.length); //clear previous captions if any
     store.captions.push(
@@ -202,48 +202,20 @@ function fetchSRT(youtubeId){
 
     fetch(reqSRT)
     .then(function (response){
-        // console.log(response);
+        // c.log(response);
         return response.json();
     })
     .then(function(data){
-        // console.log(data.text);
+        // c.log(data.text);
         // parseSrt(data.text);
         parseTimedText(data)
     })
     .catch(function (error){
-        console.log(error);
+        c.log(error);
     });
 }
 
-function parseSrt(response){
-    store.response = response;
-    var srt = store.response.split('\n\n');
-    console.log('srt length: ' + srt.length);
-    // store.captions = [];
-    store.captions.splice(0, store.captions.length); //clear previous captions if any
-    srt.forEach(function(line){
-        var tsLine = line.split('\n');
-        // console.log('ts length: '+ tsLine.length);
-        var caption = {
-            'index': tsLine[0],
-            'ts': tsLine[1],
-            'text': tsLine[2],
-            'tsDisplay': tsLine[1].substr(0,8),
-            'tsSec': tsToSeconds(tsLine[1])
-        };
-        store.captions.push(caption);
-    });
-}
-
-function tsToSeconds(ts){
-    
-    var startTime = ts.substr(0,8).split(':'); //01:01:26 from 01:01:26,789 --> 00:00:26,189'
-    // h:3600, m:60 , s: 
-    var inSeconds = (parseInt(startTime[0]*3600)) +(parseInt(startTime[1]*60)) + parseInt(startTime[2]);
-    return inSeconds;
-}
-
-var toHHMMSS = (secs) => {
+function toHHMMSS (secs) {
     var sec_num = parseInt(secs, 10)
     var hours = Math.floor(sec_num / 3600)
     var minutes = Math.floor(sec_num / 60) % 60
@@ -274,8 +246,8 @@ function parseTimedText(response){
 }
 
 function gotoTS(ts){
-    // console.log(ts);
-    console.log('seekTo: ' + ts);
+    // c.log(ts);
+    c.log('seekTo: ' + ts);
     player.seekTo(ts, true);
 
 }
@@ -303,7 +275,7 @@ function onYouTubeIframeAPIReady(url) {
     if(!url){
         return;
     }
-    console.log('onYouTubeIframeAPIReady called '+url);
+    c.log('onYouTubeIframeAPIReady called '+url);
     // var ytdiv = document.getElementById('ytVideo');
     // ytdiv.innerHTML = '&nbsp;';
     if(player){
@@ -324,23 +296,29 @@ function onYouTubeIframeAPIReady(url) {
 }
 
 function onPlayerReady(event) {
-    console.log('onPlayerReady called');
+    c.log('onPlayerReady called');
     // event.target.playVideo();
 }
 
 var done = false;
 
 function onPlayerStateChange(event) {
-    console.log('onPlayerStateChange called');
+    c.log('onPlayerStateChange called');
     if (event.data == YT.PlayerState.PLAYING && !done) {
       // setTimeout(stopVideo, 2000);
       done = true;
     }
 }
 function stopVideo() {
-    console.log('stopVideo called');
+    c.log('stopVideo called');
     player.stopVideo();
 }
 
 
 // https://www.youtube.com/watch?v=7QPlF2UNowM
+
+
+var c = console;
+
+//disable console in production
+c.log = function (msg){}
