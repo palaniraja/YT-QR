@@ -207,7 +207,8 @@ function fetchSRT(youtubeId){
     })
     .then(function(data){
         // console.log(data.text);
-        parseSrt(data.text);
+        // parseSrt(data.text);
+        parseTimedText(data)
     })
     .catch(function (error){
         console.log(error);
@@ -240,6 +241,36 @@ function tsToSeconds(ts){
     // h:3600, m:60 , s: 
     var inSeconds = (parseInt(startTime[0]*3600)) +(parseInt(startTime[1]*60)) + parseInt(startTime[2]);
     return inSeconds;
+}
+
+var toHHMMSS = (secs) => {
+    var sec_num = parseInt(secs, 10)
+    var hours = Math.floor(sec_num / 3600)
+    var minutes = Math.floor(sec_num / 60) % 60
+    var seconds = sec_num % 60
+
+    return [hours, minutes, seconds]
+        .map(v => v < 10 ? "0" + v : v)
+        .filter((v, i) => v !== "00" || i > 0)
+        .join(":")
+}
+
+
+function parseTimedText(response){
+    store.response = response;
+    store.captions.splice(0, store.captions.length); //clear previous captions if any
+    response.forEach(function (line, index){
+
+        var caption = {
+            'index': index,
+            'ts': line.start,
+            'text': line.text,
+            'tsDisplay': toHHMMSS(line.start),
+            'tsSec': line.start
+        };
+        store.captions.push(caption);
+
+    });
 }
 
 function gotoTS(ts){
