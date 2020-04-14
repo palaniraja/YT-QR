@@ -24,16 +24,16 @@ Vue.component('app-search', {
     };
   },
   mounted: function() {
-    c.log("vue search initialized");
+    console.log("vue search initialized");
   },
   methods: {
     loadYoutube: function(event){
         store.inputString = url.value;
-        c.log('request to load url: ' );
-        c.log(url.value);
+        console.log('request to load url: ' );
+        console.log(url.value);
         var ytId = parseForYoutubeId(url.value)
         if (ytId){
-            c.log("youtubeId parsed: " + ytId);
+            console.log("youtubeId parsed: " + ytId);
             store.youtubeId = ytId;
             loadYTvideo(ytId);    
             fetchSRT(store.youtubeId);
@@ -51,7 +51,7 @@ Vue.component('app-video', {
                 </div>
   `,
   mounted: function() {
-    c.log("vue app-video initialized");
+    console.log("vue app-video initialized");
   },
   methods: {
     loadYoutube: function(event){
@@ -76,13 +76,13 @@ Vue.component('app-caption', {
     }
   },
   mounted: function() {
-    c.log("vue app-caption initialized");
+    console.log("vue app-caption initialized");
   },
   methods: {
     seek: function(event, arg){
-        c.log('seek called');
-        // c.log(event);
-        c.log(arg);
+        console.log('seek called');
+        // console.log(event);
+        console.log(arg);
         window.gotoTS(arg);
     }
   }
@@ -109,7 +109,7 @@ Vue.component('app', {
     </div>
   `,
   mounted: function() {
-    c.log("vue app-component initialized");
+    console.log("vue app-component initialized");
 
   }
 });
@@ -122,7 +122,7 @@ var app = new Vue({
     response: '',
   },
   mounted: function() {
-    c.log("vue app initialized");
+    console.log("vue app initialized");
     autoResizeSRTLayout();
   },
   methods: {
@@ -154,7 +154,7 @@ function loadYTvideo(url){
 //     yt.innerText = `
 // <iframe height="100%" width="100%" src="https://www.youtube.com/embed/`+url+`?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> 
 //     `;
-    c.log('loadYTvideo :'+url);
+    console.log('loadYTvideo :'+url);
     onYouTubeIframeAPIReady(url);
 }
 
@@ -176,7 +176,7 @@ function parseForYoutubeId(urlIdString){
 
 
 function fetchSRT(youtubeId){
-    c.log('fetchSRT called with id: ' + youtubeId);
+    console.log('fetchSRT called with id: ' + youtubeId);
 
     store.captions.splice(0, store.captions.length); //clear previous captions if any
     store.captions.push(
@@ -202,16 +202,16 @@ function fetchSRT(youtubeId){
 
     fetch(reqSRT)
     .then(function (response){
-        // c.log(response);
+        // console.log(response);
         return response.json();
     })
     .then(function(data){
-        // c.log(data.text);
+        // console.log(data.text);
         // parseSrt(data.text);
         parseTimedText(data)
     })
     .catch(function (error){
-        c.log(error);
+        console.log(error);
     });
 }
 
@@ -246,8 +246,8 @@ function parseTimedText(response){
 }
 
 function gotoTS(ts){
-    // c.log(ts);
-    c.log('seekTo: ' + ts);
+    // console.log(ts);
+    console.log('seekTo: ' + ts);
     player.seekTo(ts, true);
 
 }
@@ -275,7 +275,7 @@ function onYouTubeIframeAPIReady(url) {
     if(!url){
         return;
     }
-    c.log('onYouTubeIframeAPIReady called '+url);
+    console.log('onYouTubeIframeAPIReady called '+url);
     // var ytdiv = document.getElementById('ytVideo');
     // ytdiv.innerHTML = '&nbsp;';
     if(player){
@@ -296,29 +296,23 @@ function onYouTubeIframeAPIReady(url) {
 }
 
 function onPlayerReady(event) {
-    c.log('onPlayerReady called');
+    console.log('onPlayerReady called');
     // event.target.playVideo();
 }
 
 var done = false;
 
 function onPlayerStateChange(event) {
-    c.log('onPlayerStateChange called');
+    console.log('onPlayerStateChange called');
     if (event.data == YT.PlayerState.PLAYING && !done) {
       // setTimeout(stopVideo, 2000);
       done = true;
     }
 }
 function stopVideo() {
-    c.log('stopVideo called');
+    console.log('stopVideo called');
     player.stopVideo();
 }
 
 
 // https://www.youtube.com/watch?v=7QPlF2UNowM
-
-
-var c = console;
-
-//disable console in production
-c.log = function (msg){}
