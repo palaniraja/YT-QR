@@ -135,8 +135,8 @@ body,
    padding: 0.5em 1em;
 }
 
-/* larger than mobile */
-@media (min-width: 640px) { 
+/* mobile */
+@media (max-width: 640px) { 
 
 	.app-main {
 	    flex-direction: row;
