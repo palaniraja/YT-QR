@@ -136,7 +136,7 @@ body,
 }
 
 /* larger than mobile */
-@media (min-width: 40.0rem) { 
+@media (min-width: 640px) { 
 
 	.app-main {
 	    flex-direction: row;
