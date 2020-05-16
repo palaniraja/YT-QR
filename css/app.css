@@ -96,7 +96,10 @@ body,
     justify-content: center;
 
 }
-.video,
+.video{
+    flex: 1.5;
+}
+
 .text {
     flex: 1;
 }
@@ -119,15 +122,10 @@ body,
 }
 
 .scroller ul{
-	margin: 0 0.4em;
+    margin: 0 0.4em;
 }
 
-.yahoo{
-    overflow:hidden;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-}
+
 
 .title{
 /*   color:transparent;
@@ -135,12 +133,19 @@ body,
    padding: 0.5em 1em;
 }
 
-/* non-mobile */
-@media (min-width: 640px) { 
 
-	.app-main {
-	    flex-direction: row;
-	}
+/* larger than tablet - non-mobile*/
+@media (min-width: 80.0rem) { 
+    .app-main {
+            flex-direction: row;
+        }
 
+    .video{
+        flex: 2;
+    }
+
+    .text {
+        flex: 1;
+    }
 
 }
